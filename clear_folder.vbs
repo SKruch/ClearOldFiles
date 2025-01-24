@@ -8,8 +8,7 @@ Dim objFSO, objFile
 'WScript.Echo "Last Modified: " & objFile.DateLastModified
 'WScript.Echo "Minutes since last Accessed: " & DateDiff("N",objFile.DateLastAccessed, Now)
 'WScript.Echo "Last Accessed: " & objFile.DateLastAccessed
-
-'=======================================
+'======================================= netx loop
 
 Set objFSO = CreateObject("Scripting.FileSystemObject")
 objStartFolder = "E:\#TEMP_E#\____DELETE_1"
