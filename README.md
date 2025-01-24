@@ -12,6 +12,10 @@ In addition, I keep a log of when a file was deleted and there are several files
 
 This prompted me to write this program.
 
+From now on, I will only write the description in Ukrainian.
+For those who are interested, Google Translate will help.
+
+==================================
 UKR
 Моя тимчасова папка (%TEMP%) очищається кожного разу, коли я вмикаю/перезавантажую комп’ютер.
 
@@ -24,5 +28,7 @@ UKR
 Крім цього в мене ведеться журнал коли який файл видалено і є декілька файлів котрі не можна видаляти. 
 
 Це спонукало мене до написання цієї програми.
+
 VS code через Git
+
 next time
