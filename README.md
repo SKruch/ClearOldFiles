@@ -16,6 +16,7 @@ From now on, I will only write the description in Ukrainian.
 For those who are interested, Google Translate will help.
 
 ==================================
+
 UKR
 
 Моя тимчасова папка (%TEMP%) очищається кожного разу, коли я вмикаю/перезавантажую комп’ютер.
@@ -30,10 +31,5 @@ UKR
 
 Це спонукало мене до написання цієї програми.
 
-<<<<<<< HEAD
-VS code через Git
-=======
 VS code через Git
 
-next time
->>>>>>> edbfe390ab594cecd4c5a920054a5dcf0af9b24f
