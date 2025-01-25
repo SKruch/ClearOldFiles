@@ -35,16 +35,13 @@ end if
 
 Set colFiles = objFolder.Files
   For Each objFile in colFiles
-'   if objFile.Name = desktop.ini then
-   
-    if DateDiff("N",objFile.DateLastAccessed, Now) < MinMinutesLastAccessed then 
+   if objFile.Name <> desktop.ini then
+   elseif objFile.Name <> desktop.log then
+   elseif DateDiff("N",objFile.DateLastAccessed, Now) > MinMinutesLastAccessed then 
 '      Wscript.Echo (objStartFolder&"\"&objFile.Name & chr(9) &" == Last Accessed: " & objFile.DateLastAccessed & " Minutes since last Accessed: " & DateDiff("N",objFile.DateLastAccessed, Now))
-    else
-      
-      
       Wscript.Echo (objStartFolder&"\"&objFile.Name & chr(9) &" == Last Accessed: " & objFile.DateLastAccessed & " Minutes since last Accessed: " & DateDiff("N",objFile.DateLastAccessed, Now) & " DELETE This Files")
       objFSO.DeleteFile objFile, force
-    End If
+   End If
   Next
 End Sub  
 
