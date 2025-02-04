@@ -15,9 +15,12 @@ FOR %%G IN (_DIR_new\_SubDir, _DIR_old_3Day\_SubDir, _DIR_old_7Day\_SubDir, _DIR
 )
 
 :: Empty folder
-FOR %%G IN (Empty_Dir, Empty_SubDir\Empty_Dir ) DO (
+FOR %%G IN (Empty_Dir, Empty_SubDir\Empty_Dir, Empty_Dir2, Empty_Dir3, Empty_Dir_Skip, Empty_Dir_Skip1, Empty_Dir2\Empty_Dir_Skip2, Empty_Dir_Skip3) DO (
   @echo FOLDER: %Root%\test\_%%G
   if not exist %Root%\test\_%%G (mkdir %Root%\test\_%%G)
 )
 popd
 exit 0
+
+
+ 
