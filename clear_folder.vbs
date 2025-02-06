@@ -1,5 +1,5 @@
 Dim objFSO, objFile, objStartFolder, objDelFolder, Subfolder, MinMinutesLastAccessed, delFolder, counter, SkippedFolders, SkippedFiles
-Dim oShell, PathDelFolder, MarkSkipFolder, SkFd, Folder, colFiles, objFolder, MarkSkipFile, SkFi, objLogFile, LogFile
+Dim oShell, PathDelFolder, MarkSkipFolder, SkFd, Folder, colFiles, objFolder, MarkSkipFile, SkFi, objLogFile, LogFile, DebugLOG
 
 '=== parameters ===
 objStartFolder = "E:\#TEMP_E#\____DELETE_1\test" '"Root" folder for Clean
@@ -14,6 +14,8 @@ SkippedFolders = Array( _
 )
 'List file name for skip (Massive)
 SkippedFiles = Array("desktop.ini", "_clear.log")
+'If the value of DebugLOG = 1, then additional lines are added to the log file. Such as: which files were skipped, which folders were skipped
+DebugLOG=0
 '=== end parameters ===
 
 Set objFSO = CreateObject("Scripting.FileSystemObject")
@@ -30,15 +32,15 @@ ShowSubfolders objFSO.GetFolder(objStartFolder)
 'Delete empty folder
 WriteLog (vbCrLf & "    Delete Empty folder")
 Set oShell = WScript.CreateObject("WScript.Shell")
-Set delFolder = oShell.exec("%windir%\System32\cmd.exe /v:on /c (dir " & objStartFolder & " /s /b /ad | sort /r)")
+Set delFolder = oShell.exec("%windir%\System32\cmd.exe /v:on /c (chcp 1251 >nul" & Chr(38) & "dir " & objStartFolder & " /s /b /ad | sort /r)")
 Do While delFolder.Status = 0
      WScript.Sleep 100
 Loop
 ' Loop to get the output
 Set TextStream = delFolder.StdOut
 While Not TextStream.AtEndOfStream
-'  WScript.Echo counter&" =While= " & Str & Trim(TextStream.ReadLine()) 
   PathDelFolder = Trim(TextStream.ReadLine())
+'  WScript.Echo " == " & PathDelFolder
   Set objDelFolder = objFSO.GetFolder(PathDelFolder)
   ' While for skipped folder and creating a skip flag
   MarkSkipFolder = 0
@@ -52,8 +54,8 @@ While Not TextStream.AtEndOfStream
   if (MarkSkipFolder = 0) and (objDelFolder.Files.count + objDelFolder.SubFolders.Count = 0) then
     WriteLog (PathDelFolder & chr(9)&" == The folder is empty - DELETE")
     objFSO.DeleteFolder PathDelFolder, force
-'  elseif objDelFolder.Files.count + objDelFolder.SubFolders.Count <> 0 then 
-'    WriteLog (PathDelFolder & chr(9)&" == The folder is NOT EMPTY - Files: " & objDelFolder.Files.count & ", SubFolder: " & objDelFolder.SubFolders.Count)
+  elseif (DebugLOG=1) and (objDelFolder.Files.count + objDelFolder.SubFolders.Count <> 0) then 
+    WriteLog (PathDelFolder & chr(9)&" == The folder is NOT EMPTY - Files: " & objDelFolder.Files.count & ", SubFolder: " & objDelFolder.SubFolders.Count)
   end if
 Wend
 'end delete empty folder
@@ -73,9 +75,9 @@ End Sub
 sub OutPut_result (objStartFolder)
 Set objFolder = objFSO.GetFolder(objStartFolder)
 'WriteLog (vbCrLf & objFolder.Path & " (Files: " & objFolder.Files.count &", SubFolder: "  & objFolder.SubFolders.Count & ")")
-'if objFolder.Files.count + objFolder.SubFolders.Count = 0 then
-'  WriteLog (objStartFolder &"    The folder is empty - delete?")
-'end if
+if (DebugLOG=1) and (objFolder.Files.count + objFolder.SubFolders.Count = 0) then
+  WriteLog (objStartFolder &"    The folder is empty - delete?")
+end if
 
 Set colFiles = objFolder.Files
 For Each objFile in colFiles
@@ -91,8 +93,8 @@ For Each objFile in colFiles
  if (MarkSkipFile = 0) and (DateDiff("N",objFile.DateLastAccessed, Now) > MinMinutesLastAccessed) then 
     WriteLog (objStartFolder&"\"&objFile.Name & chr(9) &" == Last Accessed: " & objFile.DateLastAccessed & " Minutes since last Accessed: " & DateDiff("N",objFile.DateLastAccessed, Now) & ", DELETE This Files")
     objFSO.DeleteFile (objStartFolder&"\"&objFile.Name), force
-' elseif (MarkSkipFile = 0) then
-'    WriteLog (objStartFolder&"\"&objFile.Name & chr(9) &" == Last Accessed: " & objFile.DateLastAccessed & " Minutes since last Accessed: " & DateDiff("N",objFile.DateLastAccessed, Now) & ", Skip, NO Delete")
+elseif (DebugLOG=1) and (MarkSkipFile = 0) then
+    WriteLog (objStartFolder&"\"&objFile.Name & chr(9) &" == Last Accessed: " & objFile.DateLastAccessed & " Minutes since last Accessed: " & DateDiff("N",objFile.DateLastAccessed, Now) & ", Skip, NO Delete")
  End If
 Next
 End Sub  
